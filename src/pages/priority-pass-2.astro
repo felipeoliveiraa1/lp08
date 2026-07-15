@@ -12,7 +12,7 @@ const PAYT = 'https://checkout.payt.com.br/multiple-oneclickbuyscript/LXGYD5.js'
     <div class="funnel-wrap">
       <p class="funnel-kicker">🛡️ ACESSO PRIORITÁRIO</p>
       <h1 class="funnel-title">PRIORITY <span class="green">PASS</span></h1>
-      <Vsl playerId="vid-6a3d5b8cb46ed3da55696ab5" poster="/assets/poster-priority-pass-2.webp" />
+      <Vsl playerId="vid-6a3d21054566297557476fca" poster="/assets/poster-priority-pass-2.webp" />
       <div class="gate" id="up02-cta">
         <PaytButton object="4EVO5L-LXG5X5" label="QUERO CONFIGURAR AINDA HOJE." />
         <a class="decline" href="/priority-pass-downsell/">NÃO QUERO ESSA OFERTA</a>
@@ -23,7 +23,7 @@ const PAYT = 'https://checkout.payt.com.br/multiple-oneclickbuyscript/LXGYD5.js'
   <!-- reveal timer: 0:43 após o play. Robusto a 2º plano (Date.now) + ?preview p/ QA. -->
   <script is:inline>
     (function () {
-      var DELAY = 43 * 1000; // 0:43 = 43s
+      var DELAY = 45 * 1000; // 0:45 = 45s
       var KEY = 'al_up02_revealed', started = 0, iv = null;
       function reveal() { document.documentElement.classList.remove('gated'); try { localStorage.setItem(KEY, '1'); } catch (e) {} if (iv) { clearInterval(iv); iv = null; } }
       function check() { if (started && Date.now() - started >= DELAY) reveal(); }
