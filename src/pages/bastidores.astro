@@ -2,8 +2,8 @@
 // "Os Bastidores da Moeda" — página de vendas (copy nova, tom claro/editorial).
 // Self-contained: head + estilos próprios (NÃO usa o tema dark/neon da home).
 // Mantém o tracking do funil (GTM + UTMify) por ser página de vendas da lp05.
-// PLACEHOLDERS a trocar quando chegarem: checkout e parcela. (Página SEM VSL.)
-const CHECKOUT = 'https://pay.kirvano.com/448e308a-ae99-4316-a0d7-3fdff88fd71e'; // TODO: checkout do ebook
+// Checkout unificado com as fronts (5ecd76ce). Preço/parcela do painel ainda a confirmar.
+const CHECKOUT = 'https://checkout.payt.com.br/5ecd76cef086597a75e716faf73aa445?split=12';
 const A = '/assets/';
 const img = {
   statement: A + '1a4e3196f7247c55_IMG-AT-8_resultado1.webp',   // extrato no celular
@@ -272,7 +272,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <header class="hero">
   <div class="wrap">
     <p class="kicker">Os Bastidores da Moeda</p>
-    <h1 class="title-xl narrow">O que há por trás do valor do dinheiro que você <em>usa todos os dias?</em></h1>
+
+    <!-- ===== VSL — player nativo do vturb (vertical 9:16) ===== -->
+    <vturb-smartplayer id="vid-6a444b0f4395e2f407d1fb96" style="display:block;margin:24px auto 0;width:100%;max-width:400px"><div class="vturb-player-placeholder" style="position:relative;width:100%;padding:177.77777777777777% 0 0;z-index:0;background-color:black"></div></vturb-smartplayer>
+    <script is:inline>(function(){var s=document.createElement('script');s.src='https://scripts.converteai.net/d9544c5d-ba21-4c7b-aa65-b6663bf5494d/players/6a444b0f4395e2f407d1fb96/v4/player.js';s.async=true;document.head.appendChild(s);})();</script>
 
     <div><a class="btn" href="#oferta">QUERO CONHECER OS BASTIDORES <span class="arr">→</span></a></div>
   </div>
