@@ -1,13 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
 // TESTE A/B de VSL (vturb ab-test 6a9b1c04…), 50/50:
-//   NOVA   6a9b1c22de8d4ffcb0692883 -> pitch 19:23 de video (= 16:09 no relogio; player roda em turbo 1.2x)
+//   NOVA   6a9b1c22de8d4ffcb0692883 -> pitch 19:15 de video (~16:03 no relogio; player roda em turbo 1.2x)
 //   ANTIGA 6a9b1c1bd50c330afd8ddce0 -> pitch 18:03
 // O gate detecta qual variante o A/B sorteou e usa o tempo certo de cada uma.
 const CHECKOUT = 'https://checkout.payt.com.br/5ecd76cef086597a75e716faf73aa445?split=12';
 ---
 <Base>
-  <!-- gate: esconde o botão até o vídeo chegar no pitch da variante (19:23 nova / 18:03 antiga, na linha do tempo do video).
+  <!-- gate: esconde o botão até o vídeo chegar no pitch da variante (19:15 nova / 18:03 antiga, na linha do tempo do video).
        Roda antes da pintura (sem flash). Sem JS / com ?preview, nada é escondido. -->
   <script is:inline>try{if(!localStorage.getItem('al_aula_revealed_v2')&&!/[?&]preview/.test(location.search))document.documentElement.classList.add('gated')}catch(e){document.documentElement.classList.add('gated')}</script>
 
@@ -37,7 +37,7 @@ const CHECKOUT = 'https://checkout.payt.com.br/5ecd76cef086597a75e716faf73aa445?
   </header>
 
   <!-- reveal A/B: o CTA aparece quando o VÍDEO chega no pitch da variante sorteada
-       (NOVA 6a9b1c22 -> 19:23 · ANTIGA 6a9b1c1b -> 18:03; tempos na LINHA DO TEMPO do video,
+       (NOVA 6a9b1c22 -> 19:15 · ANTIGA 6a9b1c1b -> 18:03; tempos na LINHA DO TEMPO do video,
        nao no relogio: o player roda com turbo 1.2x).
        A variante vem do id REAL do player: o vturb reescreve <vturb-smartplayer id="ab-…">
        para "vid-<variante>" ao resolver o teste (fallback: localStorage vturb-ab-<testId>).
@@ -46,7 +46,7 @@ const CHECKOUT = 'https://checkout.payt.com.br/5ecd76cef086597a75e716faf73aa445?
   <script is:inline>
     (function () {
       var AB_KEY = 'vturb-ab-6a9b1c047e08bd6486b95e21';
-      var VAR_NOVA   = '6a9b1c22de8d4ffcb0692883', PITCH_NOVA   = 19 * 60 + 23; // NOVA:   19:23 = 1163s (= 16:09 no relogio, turbo 1.2x)
+      var VAR_NOVA   = '6a9b1c22de8d4ffcb0692883', PITCH_NOVA   = 19 * 60 + 15; // NOVA:   19:15 = 1155s (medido no player; ~16:03 no relogio a 1.2x)
       var VAR_ANTIGA = '6a9b1c1bd50c330afd8ddce0', PITCH_ANTIGA = 18 * 60 + 3; // ANTIGA: 18:03 = 1083s
       var CK_NOVA   = 'https://checkout.payt.com.br/a80b8395c5f7246bc2e09aff4f75cd47?split=12'; // oferta da VSL nova
       var CK_ANTIGA = 'https://checkout.payt.com.br/5ecd76cef086597a75e716faf73aa445?split=12'; // oferta da VSL antiga
