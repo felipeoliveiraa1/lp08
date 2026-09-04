@@ -1,13 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
 // TESTE A/B de VSL (vturb ab-test 6a9b1c04…), 50/50:
-//   NOVA   6a9b1c22de8d4ffcb0692883 -> pitch 16:09
+//   NOVA   6a9b1c22de8d4ffcb0692883 -> pitch 19:23 de video (= 16:09 no relogio; player roda em turbo 1.2x)
 //   ANTIGA 6a9b1c1bd50c330afd8ddce0 -> pitch 18:03
 // O gate detecta qual variante o A/B sorteou e usa o tempo certo de cada uma.
 const CHECKOUT = 'https://checkout.payt.com.br/5ecd76cef086597a75e716faf73aa445?split=12';
 ---
 <Base>
-  <!-- gate: esconde o botão até o vídeo chegar no pitch da variante (16:09 nova / 18:03 antiga).
+  <!-- gate: esconde o botão até o vídeo chegar no pitch da variante (19:23 nova / 18:03 antiga, na linha do tempo do video).
        Roda antes da pintura (sem flash). Sem JS / com ?preview, nada é escondido. -->
   <script is:inline>try{if(!localStorage.getItem('al_aberta_revealed_v2')&&!/[?&]preview/.test(location.search))document.documentElement.classList.add('gated')}catch(e){document.documentElement.classList.add('gated')}</script>
 
@@ -31,13 +31,14 @@ const CHECKOUT = 'https://checkout.payt.com.br/5ecd76cef086597a75e716faf73aa445?
 
       <div class="gate" id="hero-cta">
         <p class="cupom mt-m">CUPOM LIBERADO</p>
-        <div class="cta-wrap"><a class="btn" href={CHECKOUT}>QUERO TER ACESSO AGORA</a></div>
+        <div class="cta-wrap"><a class="btn" id="cta-checkout" href={CHECKOUT}>QUERO TER ACESSO AGORA</a></div>
       </div>
     </div>
   </header>
 
   <!-- reveal A/B: o CTA aparece quando o VÍDEO chega no pitch da variante sorteada
-       (NOVA 6a9b1c22 -> 16:09 · ANTIGA 6a9b1c1b -> 18:03).
+       (NOVA 6a9b1c22 -> 19:23 · ANTIGA 6a9b1c1b -> 18:03; tempos na LINHA DO TEMPO do video,
+       nao no relogio: o player roda com turbo 1.2x).
        A variante vem do id REAL do player: o vturb reescreve <vturb-smartplayer id="ab-…">
        para "vid-<variante>" ao resolver o teste (fallback: localStorage vturb-ab-<testId>).
        Até saber a variante usa o MAIOR tempo (nunca revela cedo). Fail-open se o player
@@ -45,18 +46,21 @@ const CHECKOUT = 'https://checkout.payt.com.br/5ecd76cef086597a75e716faf73aa445?
   <script is:inline>
     (function () {
       var AB_KEY = 'vturb-ab-6a9b1c047e08bd6486b95e21';
-      var VAR_NOVA   = '6a9b1c22de8d4ffcb0692883', PITCH_NOVA   = 16 * 60 + 9; // NOVA:   16:09 = 969s
+      var VAR_NOVA   = '6a9b1c22de8d4ffcb0692883', PITCH_NOVA   = 19 * 60 + 23; // NOVA:   19:23 = 1163s (= 16:09 no relogio, turbo 1.2x)
       var VAR_ANTIGA = '6a9b1c1bd50c330afd8ddce0', PITCH_ANTIGA = 18 * 60 + 3; // ANTIGA: 18:03 = 1083s
+      var CK_NOVA   = 'https://checkout.payt.com.br/a80b8395c5f7246bc2e09aff4f75cd47?split=12'; // oferta da VSL nova
+      var CK_ANTIGA = 'https://checkout.payt.com.br/5ecd76cef086597a75e716faf73aa445?split=12'; // oferta da VSL antiga
       var PITCH = Math.max(PITCH_NOVA, PITCH_ANTIGA); // até detectar a variante, usa o maior
-      var VARIANTE = 'detectando…';
+      var VARIANTE = 'detectando…', CK = '—';
       var KEY = 'al_aberta_revealed_v2', iv = null, t0 = Date.now(), saw = false;
       function mmss(s) { if (!(s >= 0)) return '--:--'; var m = Math.floor(s / 60), r = Math.floor(s % 60); return (m < 10 ? '0' : '') + m + ':' + (r < 10 ? '0' : '') + r; }
       function reveal() { document.documentElement.classList.remove('gated'); try { localStorage.setItem(KEY, '1'); } catch (e) {} if (iv) { clearInterval(iv); iv = null; } }
+      function setCk(u, tag) { var a = document.getElementById('cta-checkout'); if (a && a.getAttribute('href') !== u) a.setAttribute('href', u); CK = tag; }
       function detect() {
         var el = document.querySelector('vturb-smartplayer'), id = (el && el.id) ? el.id.replace(/^vid-/, '') : '';
         if (!id || id.indexOf('ab-') === 0) { try { id = localStorage.getItem(AB_KEY) || ''; } catch (e) { id = ''; } }
-        if (id === VAR_NOVA) { PITCH = PITCH_NOVA; VARIANTE = 'NOVA'; }
-        else if (id === VAR_ANTIGA) { PITCH = PITCH_ANTIGA; VARIANTE = 'ANTIGA'; }
+        if (id === VAR_NOVA) { PITCH = PITCH_NOVA; VARIANTE = 'NOVA'; setCk(CK_NOVA, 'a80b8395'); }
+        else if (id === VAR_ANTIGA) { PITCH = PITCH_ANTIGA; VARIANTE = 'ANTIGA'; setCk(CK_ANTIGA, '5ecd76ce'); }
       }
       function vtime() { try { var a = (window.smartplayer && window.smartplayer.instances) || []; for (var i = 0; i < a.length; i++) { var t = a[i] && a[i].instance && a[i].instance.currentTime; if (typeof t === 'number' && isFinite(t)) return t; } } catch (e) {} return -1; }
       var dbg = null;
@@ -70,7 +74,7 @@ const CHECKOUT = 'https://checkout.payt.com.br/5ecd76cef086597a75e716faf73aa445?
         detect();
         var t = vtime();
         if (t >= 0) saw = true;
-        if (dbg) dbg.textContent = 'variante: ' + VARIANTE + '\npitch:    ' + mmss(PITCH) + '\nvideo:    ' + mmss(t) + '\nfalta:    ' + mmss(PITCH - t);
+        if (dbg) dbg.textContent = 'variante: ' + VARIANTE + '\npitch:    ' + mmss(PITCH) + '\nvideo:    ' + mmss(t) + '\nfalta:    ' + mmss(PITCH - t) + '\ncheckout: ' + CK;
         if (t >= PITCH) return reveal();
         if (!saw && Date.now() - t0 > 30000) reveal();
       }
