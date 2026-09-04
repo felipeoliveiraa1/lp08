@@ -1,13 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
-// Cópia da /aberta/ com a VSL nova (vid-6a5553b46bb281f2af61f70d).
-// VSL + botão que só aparece após 13:55 de vídeo (mesmo gate da home).
+// TESTE A/B de VSL (vturb ab-test 6a9af868…) — variantes 6a99ef0b e 6a9af897.
+// VSL + botão que só aparece após 16:09 de vídeo (tempo do pitch informado).
 const CHECKOUT = 'https://checkout.payt.com.br/5ecd76cef086597a75e716faf73aa445?split=12';
 ---
 <Base>
-  <!-- gate: esconde o botão até o play completar 13:55. Roda antes da pintura (sem flash).
+  <!-- gate: esconde o botão até o play completar 16:09. Roda antes da pintura (sem flash).
        Sem JS / com ?preview, nada é escondido. -->
-  <script is:inline>try{if(!localStorage.getItem('al_aula_revealed')&&!/[?&]preview/.test(location.search))document.documentElement.classList.add('gated')}catch(e){document.documentElement.classList.add('gated')}</script>
+  <script is:inline>try{if(!localStorage.getItem('al_aula_revealed_v2')&&!/[?&]preview/.test(location.search))document.documentElement.classList.add('gated')}catch(e){document.documentElement.classList.add('gated')}</script>
 
   <!-- ============ HERO (aula) ============ -->
   <header class="hero" style="background-image:url(/assets/hero-bg.webp)">
@@ -16,15 +16,15 @@ const CHECKOUT = 'https://checkout.payt.com.br/5ecd76cef086597a75e716faf73aa445?
         Trabalhadores brasileiros estão <span class="green">saindo da CLT</span> com essa nova inteligência artificial.
       </h1>
       <p class="hero-sub">Assista ao vídeo abaixo e veja como fazer um <strong>segundo salário em dólar</strong> ainda essa semana</p>
-      <!-- ===== VSL — player nativo do vturb (carrega no load = play-rate real) ===== -->
+      <!-- ===== VSL — player nativo do TESTE A/B do vturb (carrega no load = play-rate real) ===== -->
       <div class="vsl-slot" id="vsl">
-        <img class="vsl-poster" src="/assets/vsl-cover-aula.webp" alt="" fetchpriority="high" decoding="async" width="270" height="480" />
-        <vturb-smartplayer id="vid-6a5553b46bb281f2af61f70d" style="display:block;width:100%;height:100%"></vturb-smartplayer>
+        <img class="vsl-poster" src="/assets/vsl-cover-nova.webp" alt="" fetchpriority="high" decoding="async" width="460" height="818" />
+        <vturb-smartplayer id="ab-6a9af868d58be9f0e09a4997" style="display:block;width:100%;height:100%"></vturb-smartplayer>
       </div>
       <script is:inline>
         /* adia o player p/ logo após o 1º paint (fora da janela do LCP): no máx 2s (requestIdleCallback)
            ou na 1ª interação. Ainda carrega p/ todos que ficam >~1s = play-rate real preservado. */
-        (function(){var SRC='https://scripts.converteai.net/d9544c5d-ba21-4c7b-aa65-b6663bf5494d/players/6a5553b46bb281f2af61f70d/v4/player.js',done=false;function load(){if(done)return;done=true;var s=document.createElement('script');s.src=SRC;s.async=true;document.head.appendChild(s);}if('requestIdleCallback' in window){requestIdleCallback(load,{timeout:2000});}else{setTimeout(load,1500);}['pointerdown','touchstart','scroll','keydown'].forEach(function(e){addEventListener(e,load,{once:true,passive:true});});})();
+        (function(){var SRC='https://scripts.converteai.net/d9544c5d-ba21-4c7b-aa65-b6663bf5494d/ab-test/6a9af868d58be9f0e09a4997/player.js',done=false;function load(){if(done)return;done=true;var s=document.createElement('script');s.src=SRC;s.async=true;document.head.appendChild(s);}if('requestIdleCallback' in window){requestIdleCallback(load,{timeout:2000});}else{setTimeout(load,1500);}['pointerdown','touchstart','scroll','keydown'].forEach(function(e){addEventListener(e,load,{once:true,passive:true});});})();
       </script>
 
       <div class="gate" id="hero-cta">
@@ -34,12 +34,12 @@ const CHECKOUT = 'https://checkout.payt.com.br/5ecd76cef086597a75e716faf73aa445?
     </div>
   </header>
 
-  <!-- reveal: botão aparece quando o VÍDEO chega em 13:55 (currentTime real do player
+  <!-- reveal: botão aparece quando o VÍDEO chega em 16:09 (currentTime real do player
        vturb). ?preview revela na hora (QA). Persiste. Fail-open se o player não carregar. -->
   <script is:inline>
     (function () {
-      var PITCH = 13 * 60 + 55; // 13:55 = 835s de vídeo
-      var KEY = 'al_aula_revealed', iv = null, t0 = Date.now(), saw = false;
+      var PITCH = 16 * 60 + 9; // 16:09 = 969s de vídeo
+      var KEY = 'al_aula_revealed_v2', iv = null, t0 = Date.now(), saw = false;
       function reveal() {
         document.documentElement.classList.remove('gated');
         try { localStorage.setItem(KEY, '1'); } catch (e) {}
