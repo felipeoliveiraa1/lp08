@@ -19,9 +19,12 @@ const CHECKOUT = 'https://checkout.payt.com.br/5ecd76cef086597a75e716faf73aa445?
       </h1>
       <p class="hero-sub hl-page">Assista ao vídeo abaixo e veja como fazer um <strong>segundo salário em dólar</strong> ainda essa semana</p>
       <!-- ===== VSL — player nativo do TESTE A/B do vturb (carrega no load = play-rate real) ===== -->
-      <div class="vsl-slot" id="vsl">
-        <img class="vsl-poster" src="/assets/vsl-cover-nova.webp" alt="" fetchpriority="high" decoding="async" width="460" height="818" />
-        <vturb-smartplayer id="ab-6a9b1c047e08bd6486b95e21" style="display:block;width:100%;height:100%"></vturb-smartplayer>
+      <div class="vsl-slot vsl-slot--flex" id="vsl">
+        <vturb-smartplayer id="ab-6a9b1c047e08bd6486b95e21" style="display:block;width:100%">
+          <div class="vturb-player-placeholder" style="position:relative;width:100%;padding:177.78% 0 0;background:#05140b">
+            <img class="vsl-poster" src="/assets/vsl-cover-nova.webp" alt="" fetchpriority="high" decoding="async" width="460" height="818" />
+          </div>
+        </vturb-smartplayer>
       </div>
       <script is:inline>
         /* adia o player p/ logo após o 1º paint (fora da janela do LCP): no máx 2s (requestIdleCallback)

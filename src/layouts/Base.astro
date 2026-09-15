@@ -50,15 +50,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- above-the-fold LCP = fundo do hero (o slot da VSL é 9/16 sem poster; o player é adiado) -->
 <link rel="preload" as="image" href="/assets/hero-bg.webp" fetchpriority="high" />
 <script is:inline>
-/* Detecta a headline do vturb (renderizada no shadow DOM do player). Quando existe:
-   libera o slot p/ crescer (senao corta) e esconde a headline/sub da pagina (senao
-   duplica). Inerte quando nao ha — a dobra da pagina continua como esta. */
+/* O shadow root do player vturb e CLOSED — nao da p/ enxergar a headline por dentro.
+   Detectamos por MEDIDA: se o player ficar mais alto que o video (9/16), e porque a
+   headline foi renderizada acima dele. Ai escondemos a headline/sub da pagina p/ nao
+   duplicar. Inerte quando nao ha headline. */
 (function(){var n=0,t=setInterval(function(){
   if(++n>60){clearInterval(t);return;}
-  var p=document.querySelector('.vsl-slot vturb-smartplayer');
-  if(!p||!p.shadowRoot)return;
-  if(p.shadowRoot.getElementById('vturb-headline-image')){
-    var s=p.closest('.vsl-slot'); if(s)s.classList.add('has-headline');
+  var p=document.querySelector('.vsl-slot--flex vturb-smartplayer');
+  if(!p||!p.clientWidth)return;
+  if(p.offsetHeight>p.clientWidth*16/9+24){
     document.documentElement.classList.add('has-vturb-headline');
     clearInterval(t);
   }
