@@ -50,19 +50,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- above-the-fold LCP = fundo do hero (o slot da VSL é 9/16 sem poster; o player é adiado) -->
 <link rel="preload" as="image" href="/assets/hero-bg.webp" fetchpriority="high" />
 <script is:inline>
-/* O shadow root do player vturb e CLOSED — nao da p/ enxergar a headline por dentro.
-   Detectamos por MEDIDA: se o player ficar mais alto que o video (9/16), e porque a
-   headline foi renderizada acima dele. Ai escondemos a headline/sub da pagina p/ nao
-   duplicar. Inerte quando nao ha headline. */
-(function(){var n=0,t=setInterval(function(){
-  if(++n>60){clearInterval(t);return;}
-  var p=document.querySelector('.vsl-slot--flex vturb-smartplayer');
-  if(!p||!p.clientWidth)return;
-  if(p.offsetHeight>p.clientWidth*16/9+24){
-    document.documentElement.classList.add('has-vturb-headline');
-    clearInterval(t);
+/* Rede de seguranca da headline: nas paginas em que a headline vem do VTURB, a da
+   pagina fica oculta. Se o player NAO carregar (adblock/erro), o placeholder do
+   light DOM continua renderizado (o shadow root nunca foi anexado) -> reexibimos a
+   headline da pagina p/ a dobra nao ficar vazia. */
+(function(){setTimeout(function(){
+  var ph=document.querySelector('.vsl-slot--flex .vturb-player-placeholder');
+  if(ph&&ph.getBoundingClientRect().height>0){
+    document.documentElement.classList.add('vturb-falhou');
   }
-},500);})();
+},8000);})();
 </script>
 </head>
 <body>

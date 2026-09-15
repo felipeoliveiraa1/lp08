@@ -122,8 +122,12 @@ a{color:inherit;text-decoration:none}
    (O shadow root do vturb e CLOSED: nao da p/ inspecionar por dentro.) */
 .vsl-slot--flex{aspect-ratio:auto}
 .vsl-slot--flex vturb-smartplayer{height:auto}
-/* headline/sub da pagina somem quando a do vturb aparece (evita mensagem duplicada) */
-html.has-vturb-headline .hl-page{display:none}
+/* A headline/sub desta pagina vem do VTURB (imagem, dentro do player). As da pagina
+   ficam ocultas de forma fixa — sem deteccao e sem troca na tela.
+   Rede de seguranca: se o player nao carregar (adblock/erro), .vturb-falhou reexibe
+   as da pagina p/ a dobra nunca ficar sem headline. */
+.hl-page{display:none}
+html.vturb-falhou .hl-page{display:block}
 
 /* "até quando?" — bg-s2 already contains the Nubank phone + faded red text */
 .quando{padding:20px clamp(10px,2.5vw,26px)}
