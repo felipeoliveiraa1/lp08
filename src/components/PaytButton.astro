@@ -1,9 +1,14 @@
 ---
 // Botão one-click do Payt. O script multiple-oneclickbuyscript varre a página por
 // elementos com payt_action="oneclick_buy" e cobra o produto do data-object; o
-// <select payt_element="installment"> oculto é onde ele injeta as parcelas.
-// IMPORTANTE: incluir o <script src=...LXGYD5.js> UMA vez por página (no .astro).
-const { object, label } = Astro.props;
+// <select payt_element="installment"> é onde ele injeta as parcelas.
+// installments -> select VISÍVEL: o comprador escolhe as parcelas no cartão.
+// (No PIX é sempre 1x; o script ignora o select.)
+// IMPORTANTE: incluir o <script src=...LJAMP7.js> UMA vez por página (no .astro).
+const { object, label, installments = false } = Astro.props;
+const selectStyle = installments
+  ? 'display:block;margin:10px auto 0;max-width:240px;padding:10px;border:1px solid #cbd5e1;border-radius:6px;background:#fff;font-size:14px'
+  : 'display:none';
 ---
 <a class="accept-btn" data-object={object} href="#" payt_action="oneclick_buy">{label}</a>
-<select data-object={object} payt_element="installment" style="display:none"></select>
+<select data-object={object} payt_element="installment" style={selectStyle}></select>

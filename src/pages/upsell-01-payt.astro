@@ -7,7 +7,7 @@ const PAYT = 'https://checkout.payt.com.br/multiple-oneclickbuyscript/LJAMP7.js'
 <Funnel title="UPSELL 01 PAYT – A Sociedade Trader" poster="/assets/poster-upsell-01.webp">
   <!-- gate: esconde os botões até 4:14 após o play. Roda antes da pintura (sem flash);
        sem JS, nada é escondido (fallback). -->
-  <script is:inline>try{if(!localStorage.getItem('al_up01_revealed')&&!/[?&]preview/.test(location.search))document.documentElement.classList.add('gated')}catch(e){document.documentElement.classList.add('gated')}</script>
+  <script is:inline>try{if(!localStorage.getItem('al_up01_revealed_v2')&&!/[?&]preview/.test(location.search))document.documentElement.classList.add('gated')}catch(e){document.documentElement.classList.add('gated')}</script>
   <div class="scarcity">⚠️ IMPORTANTE: ESSA PÁGINA SAIRÁ DO AR EM <span id="cd">15:00</span></div>
   <main class="funnel">
     <div class="funnel-wrap">
@@ -17,9 +17,9 @@ const PAYT = 'https://checkout.payt.com.br/multiple-oneclickbuyscript/LJAMP7.js'
         <li class="is-now"><span class="ic">⚙️</span> Passo 2: Configuração blindada</li>
         <li><span class="ic">⏳</span> Passo 3: Compra concluída!</li>
       </ul>
-      <Vsl playerId="vid-6a3d2078ab74e8fd0f267310" poster="/assets/poster-upsell-01.webp" />
+      <Vsl playerId="vid-6aa9c80772cd6c56ec7bcc68" />
       <div class="gate" id="up01-cta">
-        <PaytButton object="RW3A9X-R29BPX" label="QUERO GARANTIR A CONFIGURAÇÃO BLIDANDADA" />
+        <PaytButton object="RW3A9X-R29BPX" label="QUERO GARANTIR A CONFIGURAÇÃO BLINDADA" installments />
         <a class="decline" href="/downsell-payt/">NÃO QUERO ESSA OFERTA</a>
       </div>
     </div>
@@ -29,8 +29,10 @@ const PAYT = 'https://checkout.payt.com.br/multiple-oneclickbuyscript/LJAMP7.js'
        ?preview revela na hora (QA). Persiste. Fail-open se o player não carregar (adblock). -->
   <script is:inline>
     (function () {
+      // VSL NOVA (vid-6aa9c807, 5:24, turbo 1.2x): tempo herdado do vídeo antigo,
+      // A CONFIRMAR com o Matheus (ler na linha do tempo do player, não no cronômetro).
       var PITCH = 4 * 60 + 10; // 4:10 = 250s de vídeo
-      var KEY = 'al_up01_revealed', iv = null, t0 = Date.now(), saw = false;
+      var KEY = 'al_up01_revealed_v2', iv = null, t0 = Date.now(), saw = false;
       function reveal() { document.documentElement.classList.remove('gated'); try { localStorage.setItem(KEY, '1'); } catch (e) {} if (iv) { clearInterval(iv); iv = null; } }
       function vtime() { try { var a = (window.smartplayer && window.smartplayer.instances) || []; for (var i = 0; i < a.length; i++) { var t = a[i] && a[i].instance && a[i].instance.currentTime; if (typeof t === 'number' && isFinite(t)) return t; } } catch (e) {} return -1; }
       function check() { var t = vtime(); if (t >= 0) saw = true; if (t >= PITCH) return reveal(); if (!saw && Date.now() - t0 > 30000) reveal(); }
