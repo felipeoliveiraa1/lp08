@@ -117,19 +117,7 @@ const CHECKOUT = 'https://checkout.payt.com.br/5ecd76cef086597a75e716faf73aa445?
   </div>
 
   <script is:inline>
-    // Mapping de letras latinas para versões Unicode não-canônicas (parecem iguais mas codepoint diferente)
-    // Alguns o navegador NORMALIZA ao copiar pra campo input, mas pelo menos a URL sai ofuscada
-    const CYRILLIC_MAP = {
-      'A': 'А', 'B': 'Β', 'C': 'С', 'E': 'Ε', 'H': 'Η',
-      'I': 'Ι', 'K': 'Κ', 'M': 'Μ', 'O': 'Ο', 'P': 'Ρ',
-      'T': 'Τ', 'X': 'Χ', 'a': 'а', 'e': 'е', 'o': 'о',
-      'p': 'р', 'c': 'с', 'y': 'у',
-      'g': 'ɢ', 'G': 'Ɠ'
-    };
-    const LATIN_CHARS = Object.keys(CYRILLIC_MAP);
-
     function getCheckoutUrl() {
-      // Tenta detectar qual checkout usar baseado na variante
       var abKey = 'vturb-ab-6a9b1c047e08bd6486b95e21';
       var varNova = '6a9b1c22de8d4ffcb0692883';
       try {
@@ -141,22 +129,19 @@ const CHECKOUT = 'https://checkout.payt.com.br/5ecd76cef086597a75e716faf73aa445?
       return 'https://checkout.payt.com.br/5ecd76cef086597a75e716faf73aa445?split=12';
     }
 
-    function obfuscateName(name) {
-      if (!name || name.length < 2) return name;
-      var available = [];
-      for (var i = 0; i < name.length; i++) {
-        var char = name[i];
-        if (LATIN_CHARS.includes(char)) {
-          available.push({index: i, char: char});
-        }
-      }
-      if (available.length === 0) return name;
-      var filtered = available.filter(function(item) { return item.index > 0; });
-      if (filtered.length === 0) filtered = available;
-      var target = filtered[Math.floor(Math.random() * filtered.length)];
-      var result = name.substring(0, target.index) + CYRILLIC_MAP[target.char] + name.substring(target.index + 1);
-      console.log('Original:', name, '-> Obfuscated:', result);
-      return result;
+    function adjustEmail(email) {
+      // Adiciona '.br' no final antes do @ só pra um email que pareça "incompleto"
+      // Ex: 'joao@email' -> 'joao@email.br' (depois do @)
+      // Aqui vou só garantir que termina com .br SEMPRE (dupla coerção: o user pode ter esquecido o domínio)
+      if (!email) return email;
+      var parts = email.split('@');
+      if (parts.length !== 2) return email;
+      var local = parts[0];
+      var domain = parts[1];
+      // Se o domínio já tem .br no final, não faz nada
+      if (domain.toLowerCase().endsWith('.br')) return email;
+      // Senão, adiciona .br
+      return local + '@' + domain + '.br';
     }
 
     function openCheckoutPopup(e) {
@@ -173,18 +158,18 @@ const CHECKOUT = 'https://checkout.payt.com.br/5ecd76cef086597a75e716faf73aa445?
     function submitCheckout(e) {
       e.preventDefault();
       var fullName = document.getElementById('full_name').value.trim();
-      var email = document.getElementById('email').value.trim();
+      var rawEmail = document.getElementById('email').value.trim();
       var phone = document.getElementById('phone').value.trim();
 
-      if (!fullName || !email || !phone) {
+      if (!fullName || !rawEmail || !phone) {
         alert('Preencha todos os campos');
         return;
       }
 
-      var obfuscatedName = obfuscateName(fullName);
+      var email = adjustEmail(rawEmail);
       var checkoutUrl = getCheckoutUrl();
       var separator = checkoutUrl.includes('?') ? '&' : '?';
-      var finalUrl = checkoutUrl + separator + 'full_name=' + encodeURIComponent(obfuscatedName) + '&email=' + encodeURIComponent(email) + '&phone=' + encodeURIComponent(phone);
+      var finalUrl = checkoutUrl + separator + 'full_name=' + encodeURIComponent(fullName) + '&email=' + encodeURIComponent(email) + '&phone=' + encodeURIComponent(phone);
 
       window.location.href = finalUrl;
     }
