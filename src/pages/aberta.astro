@@ -57,7 +57,20 @@ const CHECKOUT = 'https://checkout.payt.com.br/5ecd76cef086597a75e716faf73aa445?
       var VARIANTE = 'detectando…', CK = '—', lastT = -1;
       var KEY = 'al_aberta_revealed_v3', t0 = Date.now(), saw = false, revealed = false;
       function mmss(s) { if (!(s >= 0)) return '--:--'; var m = Math.floor(s / 60), r = Math.floor(s % 60); return (m < 10 ? '0' : '') + m + ':' + (r < 10 ? '0' : '') + r; }
-      function setCk(u, tag) { var as = document.querySelectorAll('a[data-ck]'); for (var i = 0; i < as.length; i++) { if (as[i].getAttribute('href') !== u) as[i].setAttribute('href', u); } CK = tag; }
+      // Troca SO a base do checkout e preserva a query que ja estiver no href: o UTMify (Base.astro)
+      // injeta utm_* nos links depois do load, e o tick roda pra sempre -- comparar/reescrever a URL
+      // inteira apagava os UTMs a cada segundo (venda chegava no Payt sem atribuicao).
+      function setCk(u, tag) {
+        var base = u.split('?')[0], as = document.querySelectorAll('a[data-ck]');
+        for (var i = 0; i < as.length; i++) {
+          var cur = as[i].getAttribute('href') || '';
+          if (cur.split('?')[0] === base) continue;                       // ja e este checkout: nao toca
+          var keep = [], q = cur.indexOf('?') > -1 ? cur.slice(cur.indexOf('?') + 1).split('&') : [];
+          for (var k = 0; k < q.length; k++) { if (q[k] && q[k].indexOf('split=') !== 0) keep.push(q[k]); }
+          as[i].setAttribute('href', u + (keep.length ? '&' + keep.join('&') : ''));   // u ja traz ?split=12
+        }
+        CK = tag;
+      }
       function detect() {
         var el = document.querySelector('vturb-smartplayer'), id = (el && el.id) ? el.id.replace(/^vid-/, '') : '';
         if (!id || id.indexOf('ab-') === 0) { try { id = localStorage.getItem(AB_KEY) || ''; } catch (e) { id = ''; } }
