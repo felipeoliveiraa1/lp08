@@ -1,12 +1,10 @@
 ---
 import Funnel from '../layouts/Funnel.astro';
 import Vsl from '../components/Vsl.astro';
-import PaytButton from '../components/PaytButton.astro';
 // UPSELL 2 — ACESSO VITALÍCIO. Clone do upsell 01 com a VSL e o produto próprios.
 // VSL: vid-6aabe99d (mídia 6aabe957, 5:31, turbo 1.2x) · pitch 04:30
 // Troca em 17/09: a midia anterior (6aab12ff) travava na reproducao. Mesmo conteudo
 // e mesma duracao (5:31 vs 5:32), entao o pitch de 4:30 nao muda.
-const PAYT = 'https://checkout.payt.com.br/multiple-oneclickbuyscript/LJAMP7.js';
 ---
 <Funnel title="VITALÍCIO – A Sociedade Trader">
   <!-- gate: esconde os botões até o vídeo chegar em 4:30. Roda antes da pintura (sem
@@ -17,12 +15,10 @@ const PAYT = 'https://checkout.payt.com.br/multiple-oneclickbuyscript/LJAMP7.js'
       <h1 class="funnel-title">AULA 01: COMECE AQUI</h1>
       <Vsl playerId="vid-6aabe99d934aa999743a09b5" />
       <div class="gate" id="vitalicio-cta">
-        <PaytButton object="RK995Z-4O2G6Z" label="ACESSO VITALICIO" installments />
-        <a class="decline" href="/downsell-payt/">NÃO QUERO ESSA OFERTA</a>
+        <div data-mndpay-render="01a0d56c-d22d-709d-a285-d65dd847574a"></div>
       </div>
     </div>
   </main>
-  <script is:inline src={PAYT}></script>
   <!-- reveal: CTA aparece quando o VÍDEO chega em 4:30 (currentTime real do player).
        Tempo na LINHA DO TEMPO do vídeo — o player roda com turbo 1.2x, então dá ~3:45
        no cronômetro. ?preview revela na hora · ?debug mostra o tempo ao vivo.
