@@ -1,8 +1,6 @@
 ---
 import Funnel from '../layouts/Funnel.astro';
 import Vsl from '../components/Vsl.astro';
-import PaytButton from '../components/PaytButton.astro';
-const PAYT = 'https://checkout.payt.com.br/multiple-oneclickbuyscript/LJAMP7.js';
 ---
 <Funnel title="UPSELL 01 PAYT – A Sociedade Trader" poster="/assets/poster-upsell-01.webp">
   <!-- gate: esconde os botões até 4:14 após o play. Roda antes da pintura (sem flash);
@@ -19,12 +17,10 @@ const PAYT = 'https://checkout.payt.com.br/multiple-oneclickbuyscript/LJAMP7.js'
       </ul>
       <Vsl playerId="vid-6aa9c80772cd6c56ec7bcc68" />
       <div class="gate" id="up01-cta">
-        <PaytButton object="RW3A9X-R29BPX" label="QUERO GARANTIR A CONFIGURAÇÃO BLINDADA" installments />
-        <a class="decline" href="/downsell-payt/">NÃO QUERO ESSA OFERTA</a>
+        <div data-mndpay-render="01a0d3e0-0c76-719f-ba62-d84f177e1b63"></div>
       </div>
     </div>
   </main>
-  <script is:inline src={PAYT}></script>
   <!-- reveal: CTA aparece quando o VÍDEO chega em 4:10 (currentTime real do player vturb).
        ?preview revela na hora (QA). Persiste. Fail-open se o player não carregar (adblock). -->
   <script is:inline>
