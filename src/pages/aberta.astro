@@ -7,7 +7,7 @@ import Base from '../layouts/Base.astro';
 // na LINHA DO TEMPO do video nas duas (~15:02 no relogio; player roda em turbo 1.2x).
 // As duas variantes trazem a MESMA headline em imagem pelo vturb -> a da pagina fica oculta (.hl-page).
 // O gate detecta a variante sorteada e troca o checkout do CTA.
-const CHECKOUT = 'https://checkout.mundpay.com/01a0c97b-3a54-7204-bccf-1585d740a6c1?ref='; // default (B) ate detectar
+const CHECKOUT = 'https://checkout.payt.com.br/5ecd76cef086597a75e716faf73aa445?split=12'; // default (B) ate detectar
 ---
 <Base>
   <!-- gate: esconde o botão até o vídeo chegar em 18:03 (linha do tempo do video).
@@ -51,10 +51,8 @@ const CHECKOUT = 'https://checkout.mundpay.com/01a0c97b-3a54-7204-bccf-1585d740a
       var AB_KEY = 'vturb-ab-6aac64bbdc15da46cd434f86';
       var VAR_A = '6aac6243cbca2ded7bfe7157', PITCH_A = 18 * 60 + 3; // A "VSL PADRAO 297": 18:03 = 1083s
       var VAR_B = '6aac648f76eb195e3e5f14fd', PITCH_B = 18 * 60 + 3; // B "FRONT ANTIGO":   18:03 = 1083s
-      // O teste A/B tem hoje uma unica variante ativa e a Mundpay forneceu um unico
-      // link de front, entao as duas variantes apontam para o mesmo checkout.
-      var CK_A = 'https://checkout.mundpay.com/01a0c97b-3a54-7204-bccf-1585d740a6c1?ref=';
-      var CK_B = 'https://checkout.mundpay.com/01a0c97b-3a54-7204-bccf-1585d740a6c1?ref=';
+      var CK_A = 'https://checkout.payt.com.br/c938339a59a26d04e9a60c87b7dbcb3d?split=12'; // R$297
+      var CK_B = 'https://checkout.payt.com.br/5ecd76cef086597a75e716faf73aa445?split=12'; // R$397
       var PITCH = Math.max(PITCH_A, PITCH_B); // até detectar a variante, usa o maior (nunca revela cedo)
       var VARIANTE = 'detectando…', CK = '—', lastT = -1;
       var KEY = 'al_aberta_revealed_v3', t0 = Date.now(), saw = false, revealed = false;

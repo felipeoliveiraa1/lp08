@@ -1,6 +1,8 @@
 ---
 import Funnel from '../layouts/Funnel.astro';
 import Vsl from '../components/Vsl.astro';
+import PaytButton from '../components/PaytButton.astro';
+const PAYT = 'https://checkout.payt.com.br/multiple-oneclickbuyscript/LJAMP7.js';
 ---
 <Funnel title="PRIORITY PASS 2 – A Sociedade Trader" poster="/assets/poster-priority-pass-2.webp">
   <!-- gate: esconde os botões até 0:43 após o play -->
@@ -12,10 +14,12 @@ import Vsl from '../components/Vsl.astro';
       <h1 class="funnel-title">PRIORITY <span class="green">PASS</span></h1>
       <Vsl playerId="vid-6a3d21054566297557476fca" poster="/assets/poster-priority-pass-2.webp" />
       <div class="gate" id="up02-cta">
-        <div data-mndpay-render="01a0d50f-88d3-7194-babe-25c282795b67"></div>
+        <PaytButton object="RB5XEZ-RVE568" label="QUERO PULAR A FILA" installments />
+        <a class="decline" href="/priority-pass-downsell/">NÃO QUERO ESSA OFERTA</a>
       </div>
     </div>
   </main>
+  <script is:inline src={PAYT}></script>
   <!-- reveal: CTA aparece quando o VÍDEO chega em 0:45 (currentTime real do player vturb).
        ?preview revela na hora (QA). Persiste. Fail-open se o player não carregar (adblock). -->
   <script is:inline>

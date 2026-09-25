@@ -1,5 +1,7 @@
 ---
 import Funnel from '../layouts/Funnel.astro';
+import PaytButton from '../components/PaytButton.astro';
+const PAYT = 'https://checkout.payt.com.br/multiple-oneclickbuyscript/LJAMP7.js';
 ---
 <Funnel title="PRIORITY PASS DOWNSELL – A Sociedade Trader">
   <main class="funnel">
@@ -12,7 +14,9 @@ import Funnel from '../layouts/Funnel.astro';
       <p class="funnel-sub">Para facilitar sua decisão e colocar você para rodar no <strong>New York Hub</strong> ainda hoje, estou liberando <strong class="green">R$ 50,00 DE DESCONTO</strong>.</p>
       <p class="funnel-price">De R$ 197,90 por <span class="green">12x de R$ 15,30</span></p>
       <p class="funnel-sub">Deixe a fila para os amadores. Garanta o seu lugar na via rápida e tenha sua Configuração Blindada ativa em tempo recorde.</p>
-      <div data-mndpay-render="01a0d510-be6e-70bc-85ed-286e61787e99"></div>
+      <PaytButton object="RAGM3E-4ZKQJ9" label="QUERO GARANTIR COM DESCONTO" installments />
+      <a class="decline" href="/vitalicio/">NÃO QUERO ESSA OFERTA</a>
     </div>
   </main>
+  <script is:inline src={PAYT}></script>
 </Funnel>

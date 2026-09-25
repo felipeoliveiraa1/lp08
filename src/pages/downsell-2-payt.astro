@@ -1,5 +1,7 @@
 ---
 import Funnel from '../layouts/Funnel.astro';
+import PaytButton from '../components/PaytButton.astro';
+const PAYT = 'https://checkout.payt.com.br/multiple-oneclickbuyscript/LJAMP7.js';
 ---
 <Funnel title="DOWNSELL 2 PAYT – A Sociedade Trader">
   <div class="scarcity">⚠️ IMPORTANTE: ESSA PÁGINA SAIRÁ DO AR EM <span id="cd">15:00</span></div>
@@ -10,7 +12,9 @@ import Funnel from '../layouts/Funnel.astro';
       <p class="funnel-sub">Você já entende que acesso a Configuração Blindada te fará ter ainda mais resultado com menos esforço, né?</p>
       <p class="funnel-sub">Então, somente aqui e agora você poderá desbloquear o seu acesso com <strong>100 REAIS OFF</strong> de desconto tocando no botão abaixo…</p>
       <p class="funnel-price">De R$697 por <span class="green">R$597</span>.<small>Você também pode parcelar em até 12x. CORRE antes que saia do ar.</small></p>
-      <div data-mndpay-render="01a0d3e4-d2db-70d7-abe7-79ee6766c87f"></div>
+      <PaytButton object="LYAYNW-45WKG5" label="QUERO GARANTIR ESSA ULTIMA OPORTUNIDADE" installments />
+      <a class="decline" href="/vitalicio/">NÃO QUERO ESSA OFERTA</a>
     </div>
   </main>
+  <script is:inline src={PAYT}></script>
 </Funnel>
