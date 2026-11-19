@@ -1,13 +1,15 @@
 ---
 // BIO — LP completa, SEM gate (os 15 blocos e os 3 botoes aparecem desde o primeiro
 // segundo) e SEM teste A/B: VSL unica e checkout unico.
-//   VSL ....: vid-6abea137 (midia 6aac61e3 "VSL PADRAO 297", 24:43) — headline em
-//             imagem pelo vturb, por isso o slot usa .vsl-slot--flex
-//   checkout: c938339a (R$297 — 1x R$267,30 com 10% no cartao, 12x R$27,64)
-// Nao e mais copia fiel da raiz: a raiz roda o A/B (ab-6aac64bb) com checkout de R$397.
+//   VSL ....: vid-6afe278c (player novo entregue pelo Matheus em 18/11/2026, midia
+//             6af7eb77 — a mesma 'VSL VALIDADA SEM INVESTIR 297' do teste A/B da lp06).
+//             Headline em imagem pelo vturb, por isso o slot usa .vsl-slot--flex.
+//             pitchTime 1083 (18:03) e turbo 1.2x no painel, mas a pagina NAO tem gate:
+//             os botoes aparecem desde o inicio, entao o pitch nao e usado aqui.
+//   checkout: 5f3fcae7 — "SOCIEDADE DO TRADER (LP08)" na Payt, o checkout do dominio.
 import Base from '../layouts/Base.astro';
 
-const CHECKOUT = 'https://checkout.payt.com.br/f/195c0eb1404804c8ae7b5c01270f9e8a?split=12'; // R$297
+const CHECKOUT = 'https://checkout.payt.com.br/5f3fcae7b5e5c5fb42115578da986857?split=12'; // R$297
 const A = '/assets/';
 const img = {
   heroBg: A + 'hero-bg.webp',
@@ -117,14 +119,14 @@ const faq = [
 
       <!-- ===== VSL — player nativo do vturb (carrega no load = play-rate real) ===== -->
       <div class="vsl-slot vsl-slot--flex" id="vsl">
-        <vturb-smartplayer id="vid-6abea13778da91d4564c0da8" style="display:block;width:100%">
+        <vturb-smartplayer id="vid-6afe278c2f5dee0ac0ccf0d8" style="display:block;width:100%">
           <div class="vturb-player-placeholder" style="position:relative;width:100%;padding:177.78% 0 0;background:#05140b"></div>
         </vturb-smartplayer>
       </div>
       <script is:inline>
         /* adia o player p/ logo após o 1º paint (fora da janela do LCP): no máx 2s (requestIdleCallback)
            ou na 1ª interação. Ainda carrega p/ todos que ficam >~1s = play-rate real preservado. */
-        (function(){var SRC='https://scripts.converteai.net/d9544c5d-ba21-4c7b-aa65-b6663bf5494d/players/6abea13778da91d4564c0da8/v4/player.js',done=false;function load(){if(done)return;done=true;var s=document.createElement('script');s.src=SRC;s.async=true;document.head.appendChild(s);}if('requestIdleCallback' in window){requestIdleCallback(load,{timeout:2000});}else{setTimeout(load,1500);}['pointerdown','touchstart','scroll','keydown'].forEach(function(e){addEventListener(e,load,{once:true,passive:true});});})();
+        (function(){var SRC='https://scripts.converteai.net/d9544c5d-ba21-4c7b-aa65-b6663bf5494d/players/6afe278c2f5dee0ac0ccf0d8/v4/player.js',done=false;function load(){if(done)return;done=true;var s=document.createElement('script');s.src=SRC;s.async=true;document.head.appendChild(s);}if('requestIdleCallback' in window){requestIdleCallback(load,{timeout:2000});}else{setTimeout(load,1500);}['pointerdown','touchstart','scroll','keydown'].forEach(function(e){addEventListener(e,load,{once:true,passive:true});});})();
       </script>
 
       <div class="gate" id="hero-cta">
